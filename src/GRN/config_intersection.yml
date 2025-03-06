@@ -1,0 +1,5 @@
+default:
+  analysis: "no_phase"
+  discovery_path: "~/results/results_network/scenic_discovery_across/comparaciones_discovery"
+  validation_path: "~/results/results_network/scenic_validation_across/comparaciones_validation"
+  output_dir: "~/results/results_network/intersection_new/"

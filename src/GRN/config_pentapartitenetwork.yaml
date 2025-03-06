@@ -1,0 +1,25 @@
+table_path: "~/results/results_network/Supplementary_table_2.xlsx"
+database: "DrugBank"       # e.g., "CTD" or "DrugBank"
+columns_to_include:
+  - "Drug"
+  - "Gene"
+  - "Target_Pathway"
+  - "BC_subtype"
+  - "cell_cycle_phase"
+row_y_positions:
+  Drug: 0
+  Gene: -2
+  Target_Pathway: -4
+  BC_subtype: -6
+  cell_cycle_phase: -8
+output_path: "~/Figures/pentapartite_network_drugbank.pdf"
+custom_order:
+  BC_subtype:
+    - "LumA"
+    - "LumB"
+    - "Her2"
+    - "Basal"
+  cell_cycle_phase:
+    - "G0/G1"
+    - "S"
+    - "G2M"

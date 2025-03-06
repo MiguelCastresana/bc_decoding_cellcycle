@@ -1,0 +1,18 @@
+default:
+  # Base directory where your data files are located.
+  data_dir: "~/data/discovery/"
+  
+  # Directory where the analysis results will be saved.
+  results_dir: "~/data/results/results_DEG/discovery/no_phase/"
+  
+  # Relative path (from data_dir) to the Seurat object file.
+  seurat_path: "combined_discovery"
+ 
+  # Relative path (from data_dir) to the metadata file.
+  metadata_path: "metadata_discovery.csv"
+  
+  # Full or relative path to the file listing the genes of interest.
+  genes_file: "~/data/final_genes_both.csv"
+  
+  # Type of analysis
+  analysis_var : "no_phasE"

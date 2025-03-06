@@ -1,0 +1,5 @@
+default:
+  analysis: "no_phase"
+  discovery_path: "~/results/results_DEG/discovery/across//binary_limma_discovery_across.RData"
+  validation_path: "~/results/results_DEG/validation/across/binary_limma_validation_across.RData"
+  output_dir: "~/data/results/results_DEG/intersection/"

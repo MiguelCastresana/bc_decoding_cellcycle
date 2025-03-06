@@ -1,0 +1,9 @@
+default:
+  analysis_var: "phase"
+  z_threshold: 1.5
+  relative_activity_cutoff: 0.95
+  min_qvalue: 0.05
+  loom_base_path: "~/GRN_discovery_across/"
+  metadata_path: "~/data/discovery/metadata_discovery.csv"
+  final_genes_path: "~/data/final_genes_both.csv"
+  output_dir: "~/results/results_network/scenic_discovery_across/"

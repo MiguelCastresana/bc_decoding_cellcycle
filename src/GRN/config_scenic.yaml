@@ -1,0 +1,30 @@
+analysis_mode: "subtype"        # Options: "phase", "subtype", or "no_phase"
+f_mtx_dir: "~/data/data_orig"
+base_project_dir: "~/GRN_discovery_within"
+metadata_file: "metadata_discovery.csv"
+gene_list_file: "final_genes_both.csv"
+
+# For phase-based analysis:
+phase_files:
+  - "G1"
+  - "S"
+  - "G2M"
+phase_groups:
+  - "G1"
+  - "S"
+  - "G2M"
+
+# For subtype-based (subtype) analysis:
+subgroup_files:
+  - "LumA"
+  - "LumB"
+  - "Her2"
+  - "Basal"
+subtype_groups:
+  - "LumA_SC"
+  - "LumB_SC"
+  - "Her2_SC"
+  - "Basal_SC"
+tfs_file: "allTFs_hg38.txt"
+arboreto_script: "arboreto_with_multiprocessing.py"
+motif_file: "motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
