@@ -80,7 +80,7 @@ The project uses the following datasets:
 
 7. **GRN_figure4c.R**: Plots Figure 4C.
 
-7. **GRN_figure5.R**: Plots Figure 5.
+8. **GRN_figure5.R**: Plots Figure 5.
 
 
 ---
