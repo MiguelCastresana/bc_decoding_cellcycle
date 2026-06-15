@@ -1,4 +1,4 @@
-table_path: "~/results/results_network/Supplementary_table_2.xlsx"
+table_path: "results/results_network/Supplementary_table_2.xlsx"
 database: "DrugBank"       # e.g., "CTD" or "DrugBank"
 columns_to_include:
   - "Drug"
@@ -12,7 +12,7 @@ row_y_positions:
   Target_Pathway: -4
   BC_subtype: -6
   cell_cycle_phase: -8
-output_path: "~/Figures/pentapartite_network_drugbank.pdf"
+output_path: "figures/pentapartite_network_drugbank.pdf"
 custom_order:
   BC_subtype:
     - "LumA"

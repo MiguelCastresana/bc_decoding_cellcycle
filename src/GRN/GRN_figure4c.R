@@ -1,12 +1,13 @@
 # Load required libraries
 library(pheatmap)
+source(file.path("src", "paths.R"))
 library(tidyverse)
 
 # ─── Load Data ─────────────────────────────────────────────────────────────
 # Load discovery data
 # Create a temporary environment and load the file into it
 tmp <- new.env()
-load("~/results/results_network/scenic_discovery_within/comparaciones", envir = tmp)
+load(results_file("results_network", "scenic_discovery_within", "comparaciones"), envir = tmp)
 
 # Get the name of the first object in that environment and assign it to a variable
 comparaciones_discovery_grn <- get(ls(tmp)[1], envir = tmp)
@@ -14,7 +15,7 @@ comparaciones_discovery_grn <- get(ls(tmp)[1], envir = tmp)
 
 # Load validation data
 tmp <- new.env()
-load("~/results/results_network/scenic_validation_within/comparaciones", envir = tmp)
+load(results_file("results_network", "scenic_validation_within", "comparaciones"), envir = tmp)
 comparaciones_validation_grn <- get(ls(tmp)[1], envir = tmp)
 
 # ─── Merge Row Names and Reorder Rows ─────────────────────────────────────────
@@ -40,10 +41,6 @@ reorder_add_missing_rows <- function(df, ordered_names) {
 
 comparaciones_discovery_grn <- reorder_add_missing_rows(comparaciones_discovery_grn, ordered_names)
 comparaciones_validation_grn <- reorder_add_missing_rows(comparaciones_validation_grn, ordered_names)
-
-# Check row names
-print(rownames(comparaciones_discovery_grn))
-print(rownames(comparaciones_validation_grn))
 
 # Replace NAs with 0 in both datasets
 comparaciones_discovery_grn[is.na(comparaciones_discovery_grn)] <- 0
@@ -94,5 +91,5 @@ p <- pheatmap(resultado,
               annotation_legend = FALSE,
               cellwidth = 13)
 
-ggsave("~/figures/Figure4_GRNs_within.pdf",p, width = 13, height = 8, dpi = 500)
+ggsave(figures_file("Figure4_GRNs_within.pdf"), p, width = 13, height = 8, dpi = 500)
 

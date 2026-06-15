@@ -12,6 +12,7 @@
 # 1. Setup Environment
 # ---------------------------
 
+source(file.path("src", "paths.R"))
 library(tidyverse)
 library(caret)
 library(Seurat)
@@ -20,16 +21,6 @@ library(SummarizedExperiment)
 library(scuttle)
 library(scCustomize)
 library(readxl)
-
-# Function to install missing packages using purrr
-install_if_missing <- function(pkgs) {
-  pkgs %>%
-    setdiff(rownames(installed.packages())) %>%
-    walk(~ install.packages(.x, dependencies = TRUE))
-}
-required_packages <- c("dplyr", "caret", "Seurat", "SingleR",
-                       "SummarizedExperiment", "scuttle", "scCustomize", "readxl")
-install_if_missing(required_packages)
 
 # ---------------------------
 # 2. Load Data
@@ -45,12 +36,12 @@ load_seurat_object <- function(filepath, object_name = "combined") {
 }
 
 # Load integrated Seurat object for discovery
-discovery_seurat_path <- "~/data/discovery/combined_discovery"
+discovery_seurat_path <- data_file("discovery", "combined_discovery")
 seurat_discovery <- load_seurat_object(discovery_seurat_path, object_name = "combined")
 message("Successfully loaded discovery Seurat object from: ", discovery_seurat_path)
 
 # Load metadata and set rownames using tibble functions
-their_metadata_path <- "~/data/discovery/Whole_miniatlas_meta.csv"
+their_metadata_path <- data_file("discovery", "Whole_miniatlas_meta.csv")
 if (!file.exists(their_metadata_path)) stop("Metadata file not found: ", their_metadata_path)
 their_metadata <- read_delim(their_metadata_path, delim = ",", col_types = cols()) %>%
   column_to_rownames(var = "NAME")
@@ -81,7 +72,7 @@ message("Training data converted to SingleCellExperiment and normalized.")
 # ---------------------------
 
 # Load supplementary tables from Excel using readxl and purrr
-supplementary_tables_path <- "~/data/discovery/supplementary_tables.xlsx"
+supplementary_tables_path <- data_file("discovery", "supplementary_tables.xlsx")
 if (!file.exists(supplementary_tables_path)) stop("Supplementary tables file not found: ", supplementary_tables_path)
 sheet_names <- excel_sheets(supplementary_tables_path)
 mylist <- map(sheet_names, ~ read_excel(supplementary_tables_path, sheet = .x))
@@ -89,7 +80,7 @@ tumor_labels <- mylist[[3]]
 message("Loaded supplementary tables from: ", supplementary_tables_path)
 
 # Load normalized list of separate Seurat objects (assumes object named 'seurat_object_list')
-normalized_seurat_list_path <- "~/data/discovery/discovery_normalized_list_separate"
+normalized_seurat_list_path <- data_file("discovery", "discovery_normalized_list_separate")
 if (!file.exists(normalized_seurat_list_path)) stop("Normalized Seurat object list file not found: ", normalized_seurat_list_path)
 load(normalized_seurat_list_path)
 if (is.null(seurat_object_list)) stop("Seurat object list not found in file: ", normalized_seurat_list_path)
@@ -231,7 +222,7 @@ pred.hesc <- SingleR(
   labels = cell_labels
 )
 
-singleR_results_path <- "~/data/validation/singleR_celltypes_training_test.RData"
+singleR_results_path <- data_file("validation", "singleR_celltypes_training_test.RData")
 save(pred.hesc, file = singleR_results_path)
 message("SingleR analysis completed and results saved to: ", singleR_results_path)
 

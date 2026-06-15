@@ -1,7 +1,9 @@
-
+source(file.path("src", "paths.R"))
+library(pheatmap)
+library(ggplot2)
 
 # Load across phase intersection between discovery and validation
-load("~/results/results_DEG/intersection/phases")
+load(results_file("results_DEG", "intersection", "phases"))
 
 colnames(results) <- gsub("G1", "G0/G1", colnames(results))  # Replace "G1" with "G0/G1"
 colnames(results) <- gsub("G2M", "G2/M", colnames(results))  # Replace "G2M" with "G2/M"
@@ -55,7 +57,7 @@ p <- pheatmap(results,
 
 
 
-ggsave("~/figures//Figure3_DE_across.pdf",p, width=6, height=8,dpi = 500)
+ggsave(figures_file("Figure3_DE_across.pdf"), p, width = 6, height = 8, dpi = 500)
 
 
 

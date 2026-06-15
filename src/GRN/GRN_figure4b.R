@@ -1,12 +1,13 @@
 # Load required libraries
 library(pheatmap)
+source(file.path("src", "paths.R"))
 library(tidyverse)
 
 # ─── Load Data ─────────────────────────────────────────────────────────────
 # Load discovery data
 # Create a temporary environment and load the file into it
 tmp <- new.env()
-load("~/results/results_network/scenic_discovery_across/comparaciones", envir = tmp)
+load(results_file("results_network", "scenic_discovery_across", "comparaciones"), envir = tmp)
 
 # Get the name of the first object in that environment and assign it to a variable
 comparaciones_discovery_grn <- get(ls(tmp)[1], envir = tmp)
@@ -14,7 +15,7 @@ comparaciones_discovery_grn <- get(ls(tmp)[1], envir = tmp)
 
 # Load validation data
 tmp <- new.env()
-load("~/results/results_network/scenic_validation_across/comparaciones", envir = tmp)
+load(results_file("results_network", "scenic_validation_across", "comparaciones"), envir = tmp)
 # Get the name of the first object in that environment and assign it to a variable
 comparaciones_validation_grn <- get(ls(tmp)[1], envir = tmp)
 
@@ -87,4 +88,4 @@ p <- pheatmap(resultado,
               cellwidth = 13,
               annotation_legend = FALSE)
 
-ggsave("~/figures/Figure4_GRNs_across.pdf",p, width = 13, height = 8, dpi = 500)
+ggsave(figures_file("Figure4_GRNs_across.pdf"), p, width = 13, height = 8, dpi = 500)

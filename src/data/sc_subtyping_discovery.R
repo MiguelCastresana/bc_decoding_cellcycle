@@ -10,25 +10,16 @@
 # ---------------------------
 # 1. Setup Environment
 # ---------------------------
+source(file.path("src", "paths.R"))
 library(tidyverse)
 library(Seurat)
 library(Matrix)
-
-# Function to install missing packages using tidyverse style
-install_if_missing <- function(pkgs) {
-  pkgs %>% 
-    setdiff(rownames(installed.packages())) %>%
-    walk(~ install.packages(.x, dependencies = TRUE))
-}
-
-required_packages <- c("Seurat", "Matrix", "dplyr")
-install_if_missing(required_packages)
 
 # Define the "not in" operator for convenience
 `%!in%` <- function(x, y) !(x %in% y)
 
 # Define data directory
-data_dir <- "~/data/discovery"
+data_dir <- data_file("discovery")
 
 # ---------------------------
 # 2. Load Gene Expression Data

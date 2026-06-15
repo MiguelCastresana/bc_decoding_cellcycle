@@ -1,4 +1,5 @@
 library(dplyr)
+source(file.path("src", "paths.R"))
 library(tidyr)
 library(purrr)
 library(ggvenn)
@@ -7,13 +8,13 @@ library(ggplot2)
 
 # ─── Load the phase and no-phase datasets ────────────────────────────────
 tmp <- new.env()
-load("~/results/results_network/intersection/GRN_phase_rss_1_5_auc_005", envir = tmp)
+load(results_file("results_network", "intersection", "GRN_phase_rss_1_5_auc_005"), envir = tmp)
 
 # Get the name of the first object in that environment and assign it to a variable
 comparaciones_phase <- get(ls(tmp)[1], envir = tmp)
 
 tmp <- new.env()
-load("~/results/results_network/intersection/GRN_nophase_rss_1_5_auc_005", envir = tmp)
+load(results_file("results_network", "intersection", "GRN_nophase_rss_1_5_auc_005"), envir = tmp)
 
 # Get the name of the first object in that environment and assign it to a variable
 comparaciones_nophase <- get(ls(tmp)[1], envir = tmp)
@@ -87,7 +88,7 @@ results <- tibble(
   Comparison3 = result3,
   Comparison4 = result4
 )
-print(results)
+message("Computed GRN phase/no-phase overlap table.")
 
 # ─── NO PHASE: Get indices of nonzero elements ─────────────────────────────
 result1_np <- comparaciones_final %>% select(1) %>% pull() %>% { which(. != 0) }

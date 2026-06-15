@@ -29,6 +29,7 @@ library(AnnotationDbi)
 library(openxlsx)
 library(pheatmap)
 library(yaml)
+source(file.path("src", "paths.R"))
 
 # Define the "not in" operator
 '%!in%' <- function(x, y) !(x %in% y)
@@ -37,8 +38,9 @@ library(yaml)
 # 2. Parse Configuration
 # -------------------------
 # (This section mirrors the command-line/configuration style of the uploaded script)
-config_file_path <- "~/src/repository/repository_final/DEG//config.yaml"
+config_file_path <- file.path("src", "DEG", "config.yaml")
 config <- yaml::read_yaml(config_file_path)$default
+config <- resolve_config_paths(config, c("data_dir", "results_dir", "genes_file"))
 validate_parameters <- function(config) {
   required_params <- c("data_dir", "results_dir", "seurat_path", 
                        "metadata_path", "genes_file","analysis_var")

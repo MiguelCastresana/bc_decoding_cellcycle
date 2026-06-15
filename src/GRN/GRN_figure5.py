@@ -2,14 +2,26 @@ import yaml
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
+from pathlib import Path
 from adjustText import adjust_text  # optional; install via pip if needed
 
 # Load configuration from external file
-with open("~/src/repository/repository_final/GRN/config_pentapartitenetwork.yaml", "r") as f:
+script_dir = Path(__file__).resolve().parent
+repo_root = script_dir.parents[1]
+
+
+def project_path(path_value):
+    path = Path(path_value).expanduser()
+    if path.is_absolute():
+        return path
+    return repo_root / path
+
+
+with open(script_dir / "config_pentapartitenetwork.yaml", "r") as f:
     config = yaml.safe_load(f)
 
 # Load the data table from Excel
-table_path = config["table_path"]
+table_path = project_path(config["table_path"])
 df = pd.read_excel(table_path)
 
 # Automatically select all unique drug names for the given database
@@ -109,7 +121,8 @@ for n, t in zip(G.nodes, texts):
 
 ax.axis("off")
 
-out_path = config["output_path"]
+out_path = project_path(config["output_path"])
+out_path.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(out_path, format="pdf", bbox_inches="tight")
 plt.show()
 print(f"Saved figure to {out_path}")

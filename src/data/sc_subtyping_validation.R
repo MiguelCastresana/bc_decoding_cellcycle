@@ -9,6 +9,7 @@
 # =============================================================================
 
 library(tidyverse)
+source(file.path("src", "paths.R"))
 library(Seurat)
 library(readxl)
 library(caret)
@@ -34,7 +35,7 @@ load_seurat_object <- function(filepath, object_name = "combined") {
 }
 
 # Load validation data (assumes the file loads an object named "combined")
-load("~/data/validation/validation_data_all_normalized")
+load(data_file("validation", "validation_data_all_normalized"))
 DefaultAssay(combined) <- 'RNA'
 
 # Clean and update metadata:
@@ -56,7 +57,7 @@ validation_data <- subset(combined, cells = metadata_filtered$NAME)
 # ---------------------------
 # 5. Load Training Data
 # ---------------------------
-training_excel_path <- "~/data/discovery/41588_2021_911_MOESM4_ESM.xlsx"
+training_excel_path <- data_file("discovery", "41588_2021_911_MOESM4_ESM.xlsx")
 if (!file.exists(training_excel_path)) stop("Training Excel file not found: ", training_excel_path)
 training_data_excel <- read_excel(training_excel_path, sheet = 3)
 
@@ -64,7 +65,7 @@ training_samples <- training_data_excel %>%
   filter(`SCTyper dataset` == "Training") %>% 
   pull(`Tumour ID`)
 
-their_metadata_path <- "~/data/discovery/metadata_discovery.csv"
+their_metadata_path <- data_file("discovery", "metadata_discovery.csv")
 if (!file.exists(their_metadata_path)) stop("Metadata file not found: ", their_metadata_path)
 their_metadata <- read_csv(their_metadata_path) %>% 
   column_to_rownames(var = "Cell") %>% 
@@ -74,7 +75,7 @@ their_metadata <- their_metadata %>%
   filter(Patient %in% training_samples)
 train_cells <- their_metadata %>% pull(Cell)
 
-training_seurat_path <- "~/data/discovery/combined_discovery"
+training_seurat_path <- data_file("discovery", "combined_discovery")
 seurat_training <- load_seurat_object(training_seurat_path, object_name = "combined")
 DefaultAssay(seurat_training) <- 'RNA'
 training_data <- subset(seurat_training, cells = train_cells)
@@ -83,7 +84,7 @@ message("Training data loaded and subset to Cancer Epithelial cells.")
 # ---------------------------
 # 6. Load SC-Subtype Signatures
 # ---------------------------
-sc_subtype_signatures_path <- "~/data/discovery/NatGen_Supplementary_table_S4.csv"
+sc_subtype_signatures_path <- data_file("discovery", "NatGen_Supplementary_table_S4.csv")
 if (!file.exists(sc_subtype_signatures_path)) stop("SC-subtype signatures file not found: ", sc_subtype_signatures_path)
 sigdat <- read_csv(sc_subtype_signatures_path, col_types = cols())
 
@@ -191,7 +192,7 @@ final_calls <- left_join(final_calls,
                          metadata_filtered %>% rownames_to_column(var = "NAME") %>% select(NAME, col7, col9),
                          by = "NAME")
 
-write.table(final_calls, "~/data/validation/validation_scsubtype", sep = ",", quote = FALSE, row.names = FALSE)
+write.table(final_calls, data_file("validation", "validation_scsubtype"), sep = ",", quote = FALSE, row.names = FALSE)
 
 # =============================================================================
 # End of Script

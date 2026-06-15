@@ -9,6 +9,7 @@
 ###############################################################################
 
 library(tidyverse)            # Loads dplyr, tidyr, purrr, readr, tibble, stringr, etc.
+source(file.path("src", "paths.R"))
 library(Seurat)
 library(SingleR)
 library(SummarizedExperiment)
@@ -17,11 +18,11 @@ library(scuttle)
 # ---------------------------
 # 2. Define File Paths
 # ---------------------------
-discovery_seurat_path    <- "~/data/discovery/combined_discovery"
-discovery_metadata_path  <- "~/data/discovery/Whole_miniatlas_meta.csv"
-validation_seurat_path   <- "~/data/validation/validation_data_all_normalized"
-results_dir              <- "~/data/validation/singleR_results_new/"
-final_genes_path         <- "~/data/final_genes_both.csv"
+discovery_seurat_path    <- data_file("discovery", "combined_discovery")
+discovery_metadata_path  <- data_file("discovery", "Whole_miniatlas_meta.csv")
+validation_seurat_path   <- data_file("validation", "validation_data_all_normalized")
+results_dir              <- data_file("validation", "singleR_results_new")
+final_genes_path         <- data_file("final_genes_both.csv")
 
 if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)

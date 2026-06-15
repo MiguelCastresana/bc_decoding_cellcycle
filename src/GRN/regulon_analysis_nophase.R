@@ -26,6 +26,7 @@ library(annotables)
 library(clusterProfiler)
 library(msigdbr)
 library(reshape2)
+source(file.path("src", "paths.R"))
 library(rlang)
 library(yaml)
 
@@ -34,8 +35,9 @@ library(yaml)
 # -------------------------
 # Parse command-line arguments via YAML
 # -------------------------
-config_file_path <- "~/src/repository/repository_final/GRN/config_nophase.yaml"
+config_file_path <- file.path("src", "GRN", "config_nophase.yaml")
 config <- yaml::read_yaml(config_file_path)$default
+config <- resolve_config_paths(config, c("loom_base_path", "metadata_path", "final_genes_path", "output_dir"))
 
 validate_parameters <- function(config) {
   required_params <- c( "z_threshold", "relative_activity_cutoff", 

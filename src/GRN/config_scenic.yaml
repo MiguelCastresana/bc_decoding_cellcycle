@@ -1,6 +1,6 @@
 analysis_mode: "subtype"        # Options: "phase", "subtype", or "no_phase"
-f_mtx_dir: "~/data/data_orig"
-base_project_dir: "~/GRN_discovery_within"
+f_mtx_dir: "data/data_orig"
+base_project_dir: "results/GRN_discovery_within"
 metadata_file: "metadata_discovery.csv"
 gene_list_file: "final_genes_both.csv"
 

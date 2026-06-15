@@ -4,6 +4,7 @@
 # Load required libraries
 # -------------------------
 
+source(file.path("src", "paths.R"))
 library(tidyverse)
 require(pheatmap)
 
@@ -16,7 +17,7 @@ require(pheatmap)
 # Load discovery data
 # Create a temporary environment and load the file into it
 tmp <- new.env()
-load("~/results/results_DEG/discovery/within/binary_limma_discovery_within.RData", envir = tmp)
+load(results_file("results_DEG", "discovery", "within", "binary_limma_discovery_within.RData"), envir = tmp)
 
 
 # Get the name of the first object in that environment and assign it to a variable
@@ -27,7 +28,7 @@ comparison_discovery <- get(ls(tmp)[1], envir = tmp)
 
 # Create a temporary environment and load the file into it
 tmp <- new.env()
-load("~/results/results_DEG/validation//within/binary_limma_validation_within.RData", envir = tmp)
+load(results_file("results_DEG", "validation", "within", "binary_limma_validation_within.RData"), envir = tmp)
 
 comparison_validation <- get(ls(tmp)[1], envir = tmp)
 
@@ -176,7 +177,7 @@ p <- pheatmap(results, cluster_cols = FALSE, cluster_rows = FALSE,
 
 
 
-ggsave("~/figures//Figure3_DE_within.pdf",p, width=6, height=8,dpi = 500)
+ggsave(figures_file("Figure3_DE_within.pdf"), p, width = 6, height = 8, dpi = 500)
 
 
 

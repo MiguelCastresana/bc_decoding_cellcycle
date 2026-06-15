@@ -1,6 +1,8 @@
 ###############################################################################
 # SETUP
 ###############################################################################
+source(file.path("src", "paths.R"))
+
 library(tidyverse)    # loads dplyr, tidyr, purrr, readr, tibble, stringr, etc.
 library(Seurat)
 library(Matrix)
@@ -13,10 +15,10 @@ library(readxl)
 ###############################################################################
 # LOAD SAMPLE INFORMATION
 ###############################################################################
-info <- read_excel("~/data/validation/sample_info.xlsx")
+info <- read_excel(data_file("validation", "sample_info.xlsx"))
 
 # List expression data file names from the validation directory
-list_files <- list.files("~/data/validation/exp_data/", full.names = FALSE)
+list_files <- list.files(data_file("validation", "exp_data"), full.names = FALSE)
 
 # Remove normal samples (first 56)
 list_files <- list_files[-(1:56)]
@@ -55,10 +57,10 @@ g2m.genes <- cc.genes$g2m.genes %>% if_else(. == "MLF1IP", "CENPU", .)
 ###############################################################################
 # Define a function to process one sample
 process_sample <- function(sample) {
-  base_path <- file.path("~/data/validation/exp_data", sample)
+  base_path <- data_file("validation", "exp_data", sample)
   mtx_file <- paste0(base_path, "-matrix.mtx.gz")
   barcode_file <- paste0(base_path, "-barcodes.tsv.gz")
-  gene_file <- "~/data/validation/gene_features/features.tsv"
+  gene_file <- data_file("validation", "gene_features", "features.tsv")
   
   # Load raw count matrix using Matrix and read_delim from readr
   exp_data <- Matrix::readMM(mtx_file)
@@ -132,7 +134,7 @@ names(seurat_object_list) <- unique(sub("^[^-]+-(.*)$", "\\1", list_files))
 ###############################################################################
 # SAVE PROCESSED DATA
 ###############################################################################
-save(seurat_object_list, file = "~/data/validation/tumor_data_normalized_list_separate")
+save(seurat_object_list, file = data_file("validation", "tumor_data_normalized_list_separate"))
 
 # Merge Seurat objects from the list, normalize combined object, and join layers
 combined <- Merge_Seurat_List(list_seurat = seurat_object_list, add.cell.ids = names(seurat_object_list)) %>%
@@ -140,12 +142,12 @@ combined <- Merge_Seurat_List(list_seurat = seurat_object_list, add.cell.ids = n
   JoinLayers()
 metadata <- combined@meta.data %>% rownames_to_column("NAME")
 combined@meta.data <- metadata
-save(combined, file = "~/data/validation/validation_data_all_normalized")
+save(combined, file = data_file("validation", "validation_data_all_normalized"))
 
 ###############################################################################
 # ADD SC SUBTYPE CALLS
 ###############################################################################
-calls <- read_delim("~/data/validation/validation_scsubtype", delim = ",")
+calls <- read_delim(data_file("validation", "validation_scsubtype"), delim = ",")
 metadata <- combined@meta.data %>% 
   left_join(calls %>% select(NAME, SCSubtypeCall), by = "NAME") %>% 
   rename(Calls = SCSubtypeCall)
@@ -154,7 +156,7 @@ combined@meta.data <- metadata
 ###############################################################################
 # ADD CELL TYPE FROM SINGLE-R RESULTS
 ###############################################################################
-dir_path <- "~/data/validation/singleR_results/"
+dir_path <- data_file("validation", "singleR_results")
 files <- list.files(dir_path, full.names = TRUE)
 file_info <- file.info(files)
 res_files <- files[order(file_info$ctime)]
@@ -178,9 +180,9 @@ combined@meta.data <- metadata
 metadata <- combined@meta.data %>% 
   filter(celltype_major == "Cancer Epithelial") %>% 
   rename(Cell = NAME)
-write_csv(metadata, "~/data/validation/metadata_validation.csv")
+write_csv(metadata, data_file("validation", "metadata_validation.csv"))
 
 ###############################################################################
 # SAVE COMBINED OBJECT
 ###############################################################################
-save(combined, file = "~/data/validation/validation_data_all_normalized")
+save(combined, file = data_file("validation", "validation_data_all_normalized"))

@@ -24,6 +24,7 @@ library(clusterProfiler)
 library(msigdbr)
 library(reshape2)
 library(rlang)
+source(file.path("src", "paths.R"))
 
 '%!in%' <- function(x, y)!('%in%'(x, y))
 
@@ -32,8 +33,9 @@ library(rlang)
 
 
 # Read the configuration file (adjust the path if necessary)
-config_file_path <- "~/src/repository/repository_final/GRN/config_intersection.yml"
+config_file_path <- file.path("src", "GRN", "config_intersection.yml")
 config <- yaml::read_yaml(config_file_path)$default
+config <- resolve_config_paths(config, c("discovery_path", "validation_path", "output_dir"))
 
 
 

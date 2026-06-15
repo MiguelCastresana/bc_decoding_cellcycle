@@ -12,6 +12,7 @@
 # ---------------------------
 
 # Load necessary libraries
+source(file.path("src", "paths.R"))
 library(Seurat)   # For handling Seurat objects
 library(dplyr)    # For data manipulation functions like left_join
 library(readr)    # For reading and writing data
@@ -22,11 +23,11 @@ library(readr)    # For reading and writing data
 
 # Define the file paths for discovery and validation datasets
 # Consider using relative paths or environment variables for better portability
-discovery_path <- "~/data/discovery/combined_discovery.RData"
-validation_path <- "~/data/validation/validation_data_all_normalized.RData"
+discovery_path <- data_file("discovery", "combined_discovery.RData")
+validation_path <- data_file("validation", "validation_data_all_normalized.RData")
 
 # Define the output path for the intersected genes
-output_genes_path <- "~/data/final_genes_both.csv"
+output_genes_path <- data_file("final_genes_both.csv")
 
 # ---------------------------
 # 3. Define Utility Functions

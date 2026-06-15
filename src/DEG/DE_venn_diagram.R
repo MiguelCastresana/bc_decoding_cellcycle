@@ -1,4 +1,4 @@
-
+source(file.path("src", "paths.R"))
 
 library(tidyverse)
 library(ggvenn)
@@ -7,13 +7,13 @@ library(eulerr)
 
 # ─── Load the phase and no-phase datasets ────────────────────────────────
 tmp <- new.env()
-load("~/results/results_DEG//intersection/phases", envir = tmp)
+load(results_file("results_DEG", "intersection", "phases"), envir = tmp)
 
 # Get the name of the first object in that environment and assign it to a variable
 comparaciones_phase <- get(ls(tmp)[1], envir = tmp)
 
 tmp <- new.env()
-load("~/results/results_DEG/intersection/no_phases", envir = tmp)
+load(results_file("results_DEG", "intersection", "no_phases"), envir = tmp)
 
 # Get the name of the first object in that environment and assign it to a variable
 comparaciones_nophase <- get(ls(tmp)[1], envir = tmp)

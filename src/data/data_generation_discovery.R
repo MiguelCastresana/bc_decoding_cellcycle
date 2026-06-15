@@ -1,6 +1,8 @@
 ###############################################################################
 # SETUP
 ###############################################################################
+source(file.path("src", "paths.R"))
+
 library(tidyverse)    # loads dplyr, tidyr, purrr, readr, tibble, etc.
 library(Seurat)
 library(Matrix)
@@ -21,13 +23,13 @@ g2m.genes <- cc.genes$g2m.genes %>%
 # LOAD AND PROCESS INDIVIDUAL SAMPLES
 ###############################################################################
 # List tumor sample directories
-sample_dirs <- list.files("~/data/tumor/data/raw_data/", full.names = FALSE)
+sample_dirs <- list.files(data_file("tumor", "data", "raw_data"), full.names = FALSE)
 
 # Process each sample using purrr::map
 seurat_object_list <- sample_dirs %>% 
   set_names() %>%   # names will be the sample directory names
   map(function(sample) {
-    base_path <- file.path("~/data/tumor/data/raw_data", sample)
+    base_path <- data_file("tumor", "data", "raw_data", sample)
     
     # Load raw count matrix (MTX)
     exp_data <- Matrix::readMM(file.path(base_path, "count_matrix_sparse.mtx"))
@@ -70,7 +72,7 @@ seurat_object_list <- sample_dirs %>%
 ###############################################################################
 # SAVE SEPARATE LIST OF SAMPLES
 ###############################################################################
-save(seurat_object_list, file = "~/data/discovery/tumor_data_normalized_list_separate")
+save(seurat_object_list, file = data_file("discovery", "tumor_data_normalized_list_separate"))
 
 ###############################################################################
 # MERGE AND NORMALIZE COMBINED SEURAT OBJECT
@@ -96,7 +98,7 @@ combined <- RenameCells(object = combined, new.names = cell_name_map)
 # ADD SCSUBTYPE CALLING
 ###############################################################################
 # Load calls from CSV using readr
-calls <- read_csv("~/data/discovery/results_mycalls.csv") %>% 
+calls <- read_csv(data_file("discovery", "results_mycalls.csv")) %>%
   mutate(my_calls = as_factor(my_calls) %>% 
            fct_recode(Her2_SC = "Her2E_SC")) %>% 
   rename(Cell = 1)   # assuming the first column contains cell names
@@ -109,7 +111,7 @@ metadata <- combined@meta.data %>%
   drop_na(Calls)
 
 # Save the updated metadata of only cancer epithelial cells to CSV
-write_csv(metadata, "~/data/discovery/metadata_discovery.csv")
+write_csv(metadata, data_file("discovery", "metadata_discovery.csv"))
 
 # Optionally check updated cell names
 print(head(Cells(combined)))
@@ -117,4 +119,4 @@ print(head(Cells(combined)))
 ###############################################################################
 # SAVE COMBINED OBJECT
 ###############################################################################
-save(combined, file = "~/data/discovery/combined_discovery")
+save(combined, file = data_file("discovery", "combined_discovery"))
