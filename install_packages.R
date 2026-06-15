@@ -6,8 +6,8 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
 }
 
-# --- Set a CRAN mirror (if not already set) ---
-chooseCRANmirror(graphics = FALSE)
+# --- Set a CRAN mirror for non-interactive installs ---
+options(repos = c(CRAN = "https://cloud.r-project.org"))
 
 # --- Install specific versions of CRAN packages ---
 # Note: For some packages the CRAN name may differ from the conda name.
@@ -30,12 +30,12 @@ remotes::install_version("ggplot2", version = "3.5.1", upgrade = "never")
 remotes::install_version("readr", version = "2.1.5", upgrade = "never")
 remotes::install_version("tidyr", version = "1.3.1", upgrade = "never")
 remotes::install_version("tibble", version = "3.2.1", upgrade = "never")
-install.packages("scCustomize", type = "binary")
+install.packages("scCustomize")
 
 # --- Install GitHub packages at specific tags ---
 remotes::install_github("aertslab/SCopeLoomR",force = TRUE)
 remotes::install_github("stephenturner/annotables", ref = "v0.2.0", force = TRUE)
-remotes::install_github("yanlinlin82/ggvenn",version = "0.1.16", force = TRUE)
+remotes::install_github("yanlinlin82/ggvenn", ref = "v0.1.16", force = TRUE)
 remotes::install_github("aertslab/SCENIC", version = "1.3.1", force = TRUE)
 
 
@@ -50,7 +50,7 @@ remotes::install_github("aertslab/SCENIC", version = "1.3.1", force = TRUE)
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 BiocManager::install(version = "3.20", ask = FALSE, update = FALSE)
-BiocManager::install("singler")                    # bioconductor-singler (expected ~2.8.0)
+BiocManager::install("SingleR")                    # bioconductor-singler (expected ~2.8.0)
 BiocManager::install("SummarizedExperiment")         # bioconductor-summarizedexperiment (expected ~1.32.0)
 BiocManager::install("scuttle")                      # bioconductor-scuttle (expected ~1.16.0)
 BiocManager::install("edgeR")                        # bioconductor-edger (expected ~4.4.1)
